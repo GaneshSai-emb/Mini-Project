@@ -108,6 +108,21 @@ EventBoard-LPC2148-Firmware/
 │
 └── README.md           # System documentation
 ```
+## Project Images
+
+<p float="left">
+  <img src="image1.jpeg" width="500"/>
+  <img src="image2.jpeg" width="500"/>
+  <img src="image3.jpeg" width="500"/>
+  <img src="image4.jpeg" width="500"/> 
+</p>
+## Demo Videos
+
+  <p float="left">
+  <img src="video.gif" width="500"/>
+</p>
+
+
 ## Targeted Application Areas
 1. **Automated Educational Timetable Alerting:** Acts as an automated notice hub inside academic institutions to broadcast lecture changes, classroom locations, lab schedules, or exam durations directly to students    without human intervention.
 2. **Industrial Shift and Maintenance Scheduling:** Perfect for manufacturing spaces to automate visual alerts for structural shift rotations, automated breakdown warnings, or scheduled tooling checkups based on factory floor time.
