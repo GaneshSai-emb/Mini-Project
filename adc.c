@@ -1,39 +1,75 @@
+/*
+ * File Name : adc.c
+ * ADC module used for reading analog values and temperature calculation.
+ */
+
 #include "types.h"
 #include "delay.h"
 #include "adc_defines.h"
 #include <lpc21XX.h>
 
+
+/* Initialize ADC */
 void Init_ADC(void)
 {
-  PINSEL1 |= AIN1;
-  ADCR |= PDN_BIT | CLKDIV;
+    /* Configure ADC pin */
+    PINSEL1 |= AIN1;
+
+    /* Enable ADC */
+    ADCR |= PDN_BIT | CLKDIV;
 }
 
 
-void Read_ADC(u32 chno, f32 *eAR, u32 * AdvDVal)
+
+/* Read ADC value from selected channel */
+void Read_ADC(u32 chno, f32 *eAR, u32 *AdvDVal)
 {
-  ADCR &= ~(255<<0);
-  ADCR |= chno | START_CONV;
-  delay_us(3);
+    /* Select ADC channel */
+    ADCR &= ~(255<<0);
 
-  while (((ADDR >> DONE_BIT) & 1) == 0);
-  ADCR &= ~(START_CONV);
- *AdvDVal = ((ADDR >> RESULT) & 1023);
+    ADCR |= chno | START_CONV;
 
-  *eAR = (* AdvDVal * (3.3 / 1023));
+
+    /* Wait for conversion complete */
+    delay_us(3);
+
+    while(((ADDR >> DONE_BIT) & 1) == 0);
+
+
+
+    /* Stop conversion */
+    ADCR &= ~(START_CONV);
+
+
+    /* Store ADC result */
+    *AdvDVal = ((ADDR >> RESULT) & 1023);
+
+
+    /* Convert ADC value to voltage */
+    *eAR = (*AdvDVal * (3.3/1023));
 }
 
-int  read_temp()
+
+
+/* Read temperature from sensor */
+int read_temp()
 {
-  f32 eAR;
-  u32 AdvDVal;
-  u32 temp;
-  Init_ADC();
-  Read_ADC(CH1, &eAR, &AdvDVal);
-  temp = eAR * 100;
+    f32 eAR;
+    u32 AdvDVal;
+    u32 temp;
 
-  return temp;
+
+    /* Initialize ADC */
+    Init_ADC();
+
+
+    /* Read sensor value */
+    Read_ADC(CH1,&eAR,&AdvDVal);
+
+
+    /* Convert voltage to temperature */
+    temp = eAR*100;
+
+
+    return temp;
 }
-
-~
-~
