@@ -1,114 +1,109 @@
-#include <lpc214x.h>
-#include "types.h"
-#include "lcd.h"
-#include "lcd_defines.h"
-#include "adc_defines.h"
-#include "adc.h"
-#include "rtc.h"
-#include "event.h"
-#include "delay.h"
-#include "kpm.h"
-#include "admin.h"
-#define _DEBUG
-#define SW 0
-
-s32 hour,min,sec;
-s32 date,month,year,day;
-u32 temperature;
-int i,j;
-int found=0;
-int holdcount=0;
-
-int now,eventtime,remaining;
-int rem_min,rem_sec;
-int eventactive=0;
-
+/*
+ * Main application for EventBoard system.
+ * Handles RTC scheduling, LCD display,
+ * temperature monitoring and admin mode.
+ */
 int main()
 {
+    /* Initialize peripherals */
     RTC_Init();
     InitLCD();
     InitKPM();
-          Init_ADC();
+    Init_ADC();
+
+    /* Configure admin switch as input */
     IODIR0 &= ~(1<<SW);
-#ifndef _DEBUG
-   SetRTCTimeInfo(7,44,44);
-   SetRTCDateInfo(8,10,2026);
-   SetRTCDay(1);
-#endif
+
     while(1)
     {
+        /* Reset event flag */
         found=0;
 
+        /* Read RTC information */
         GetRTCTimeInfo(&hour,&min,&sec);
         GetRTCDateInfo(&date,&month,&year);
         GetRTCDay(&day);
-       /* ADMIN SWITCH CHECK */
+
+        /* Check admin switch */
         if(((IOPIN0>>SW)&1)==0)
         {
             delay_ms(50);
-                         while(((IOPIN0>>SW)&1)==0);
-                CmdLCD(CLEAR_LCD);
-                StrLCD("ADMIN MODE");
-                            delay_ms(50);
-                adminmode();
 
+            /* Wait for switch release */
+            while(((IOPIN0>>SW)&1)==0);
+
+            CmdLCD(CLEAR_LCD);
+            StrLCD("ADMIN MODE");
+
+            /* Enter administrator menu */
+            adminmode();
         }
 
+        /* Search active events */
         for(i=0;i<TOTAL_MESSAGES;i++)
         {
-            now = hour*3600 + min*60 + sec;
-            eventtime = messageList[i].hour*3600 + messageList[i].min*60;
-            remaining = (eventtime + 900) - now;
-            if(messageList[i].enabled && remaining > 0 && remaining <= 900 )
-            {
-                found = 1;
-                if(eventactive=0)
-                                {
-                                CmdLCD(CLEAR_LCD);
-                                }
+            /* Convert time into seconds */
+            now=hour*3600+min*60+sec;
+            eventtime=messageList[i].hour*3600+
+                      messageList[i].min*60;
 
-                /* LINE1 ? EVENT SCROLL */
+            /* Calculate remaining event time */
+            remaining=(eventtime+900)-now;
+
+            /* Check whether event is active */
+            if(messageList[i].enabled &&
+               remaining>0 &&
+               remaining<=900)
+            {
+                found=1;
+
+                /* Clear LCD on new event */
+                if(eventactive==0)
+                    CmdLCD(CLEAR_LCD);
+
+                /* Display scrolling message */
                 CmdLCD(GOTO_LINE1_POS0);
                 ScrollLCD(messageList[i].msg);
 
-                /* TIMER CALCULATION */
-                rem_min = remaining/60;
-                rem_sec = remaining%60;
+                /* Calculate countdown */
+                rem_min=remaining/60;
+                rem_sec=remaining%60;
 
-                /* LINE2 ? TIMER */
+                /* Display timer */
                 CmdLCD(GOTO_LINE2_POS0);
-                                StrLCD("time left:");
+                StrLCD("time left:");
+
                 CharLCD((rem_min/10)+'0');
                 CharLCD((rem_min%10)+'0');
                 CharLCD(':');
                 CharLCD((rem_sec/10)+'0');
                 CharLCD((rem_sec%10)+'0');
-                StrLCD("         ");
+
                 delay_ms(10);
-
             }
-
         }
-                if(found==0&&eventactive==1)
-                {
-                CmdLCD(CLEAR_LCD);
-                }
+
+        /* Return to normal display */
         if(found==0)
         {
-                    temperature= read_temp();
+            /* Read temperature */
+            temperature=read_temp();
+
+            /* Display RTC details */
             DisplayRTCTime(hour,min,sec);
             DisplayRTCDate(date,month,year);
             DisplayRTCDay(day);
-                    CmdLCD(GOTO_LINE2_POS0+ 11);
-                        U32LCD(read_temp());
+
+            /* Display temperature */
+            CmdLCD(GOTO_LINE2_POS0+11);
+            U32LCD(temperature);
             CharLCD(223);
             CharLCD('C');
-                        delay_ms(500);
 
+            delay_ms(500);
         }
-                eventactive=found;
-    }
 
+        /* Update event state */
+        eventactive=found;
+    }
 }
-~
-~
