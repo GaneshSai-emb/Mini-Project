@@ -116,10 +116,16 @@ EventBoard-LPC2148-Firmware/
   <img src="image3.jpeg" width="500"/>
   <img src="image4.jpeg" width="500"/> 
 </p>
+
 ## Demo Videos
 
   <p float="left">
   <img src="video.gif" width="500"/>
+</p>
+
+## Block Diagram
+<p align="center">
+  <img src="blockdiagram.png" alt="Block Diagram" width="500">
 </p>
 
 
