@@ -41,7 +41,7 @@ The project is designed to explicitly utilize on-chip peripherals and standard e
 
 ---
 
-## ⚙️ Core Working Principle & Hardware Flow
+##  Core Working Principle & Hardware Flow
 
 The architecture operates within a highly systematic execution loop divided into distinct hardware phases:
 
@@ -55,11 +55,11 @@ The architecture operates within a highly systematic execution loop divided into
 
 ---
 
-## 🧩 Firmware Architecture & Modular Breakdown
+##  Firmware Architecture & Modular Breakdown
 
 The system code follows a strictly modular layout, segregating low-level hardware register access from high-level scheduling algorithms:
 
-### 📡 Analog-to-Digital Converter (`adc.c` / `adc.h`)
+###  Analog-to-Digital Converter (`adc.c` / `adc.h`)
 Manages the hardware initialization and successive readout operations of the internal 10-bit converter block. It manages standard operational bit configurations:
 - `PDN_BIT (Bit 21)`: Powers on the internal ADC block.
 - `CLKDIV`: Scales PCLK down to a valid sampling clock frequency (ADCLK = 3 MHz).
@@ -78,7 +78,7 @@ Calculates raw block timing using hardcoded assembly-equivalent software executi
 
 ---
 
-## 📁 System Project Tree
+##  System Project Tree
 
 ```text
 EventBoard-LPC2148-Firmware/
@@ -109,19 +109,18 @@ EventBoard-LPC2148-Firmware/
 └── README.md           # System documentation
 ```
 ## Targeted Application Areas
-1. Automated Educational Timetable Alerting: Acts as an automated notice hub inside academic institutions to broadcast lecture changes, classroom locations, lab schedules, or exam durations directly to students    without human intervention.
-2. Industrial Shift and Maintenance Scheduling: Perfect for manufacturing spaces to automate visual alerts for structural shift rotations, automated breakdown warnings, or scheduled tooling checkups based on factory floor time.
-3. Corporate Smart Offices: Replaces traditional stationary notice boards in corporate facilities to stream real-time updates regarding general assembly calls, boardroom reservations, or break reminders.
-4. Healthcare & Clinical Alerts: Deployable in healthcare clinics for streaming patient care timetables, medication dispensing timelines, or automated safety check markers while checking ambient ward conditions.
+1. **Automated Educational Timetable Alerting:** Acts as an automated notice hub inside academic institutions to broadcast lecture changes, classroom locations, lab schedules, or exam durations directly to students    without human intervention.
+2. **Industrial Shift and Maintenance Scheduling:** Perfect for manufacturing spaces to automate visual alerts for structural shift rotations, automated breakdown warnings, or scheduled tooling checkups based on factory floor time.
+3. **Corporate Smart Offices:** Replaces traditional stationary notice boards in corporate facilities to stream real-time updates regarding general assembly calls, boardroom reservations, or break reminders.
+4. **Healthcare & Clinical Alerts:** Deployable in healthcare clinics for streaming patient care timetables, medication dispensing timelines, or automated safety check markers while checking ambient ward conditions.
 ## Future Architecture Enhancements
-1. Non-Volatile Storage Integration: Add external $I2C-driven EEPROM support to store modifications to event attributes, preventing schedule loss during a power collapse.
-2. Wireless Networking Capability: Interface an external UART Wi-Fi/Bluetooth stack to allow automated cloud scheduling updates, bypassing the physical keypad.
+1. **Non-Volatile Storage Integration:** Add external $I2C-driven EEPROM support to store modifications to event attributes, preventing schedule loss during a power collapse.
+2. **Wireless Networking Capability:** Interface an external UART Wi-Fi/Bluetooth stack to allow automated cloud scheduling updates, bypassing the physical keypad.
 3. Dynamic DMA Scrolling: Transition display logic toward an interrupt-driven Direct Memory Access (DMA) or timer-based refresh layout to eliminate raw blocking delays.
 ## Project Outcomes:
-1. Register-Level Competency: Manually engineered pure, hardware-level abstraction layers and drivers without relying on standard vendor runtime packages or third-party wrappers, confirming a strong mastery of low-level ARM7 architectures.
-2. Defensive Firmware Execution: Built strict boundary filters inside data input channels to parse and discard anomalous user inputs before pushing modifications to actual hardware target registers.
-3. Advanced Peripheral Cohabitation: Successfully optimized system resources to handle multi-bit character streams, continuous analog conversions, physical grid matrices, and timekeeping registers inside one unified firmware lifecycle.
-4. Modular Code Reusability: Established a clean, decoupled file directory infrastructure that maintains a clear partition between high-level logic states and raw bare-metal hardware actions.
+1. **Register-Level Competency:** Manually engineered pure, hardware-level abstraction layers and drivers without relying on standard vendor runtime packages or third-party wrappers, confirming a strong mastery of low-level ARM7 architectures.
+2. **Defensive Firmware Execution:** Built strict boundary filters inside data input channels to parse and discard anomalous user inputs before pushing modifications to actual hardware target registers.
+3. **Advanced Peripheral Cohabitation:** Successfully optimized system resources to handle multi-bit character streams, continuous analog conversions, physical grid matrices, and timekeeping registers inside one unified firmware lifecycle.
+4. **Modular Code Reusability:** Established a clean, decoupled file directory infrastructure that maintains a clear partition between high-level logic states and raw bare-metal hardware actions.
 ## Conclusion
 **The EventBoard: RTC-Driven Message Display System **demonstrates a robust execution of bare-metal firmware design for high-reliability embedded platforms. By successfully structuring a clean hardware interaction framework between the internal real-time clock, multi-bit LCD logic, continuous analog metrics, and input matrices, the application maintains clock accuracy while staying completely responsive to local administrative modifications.  The resulting system forms an efficient blueprint for any automated tracking application, showing strong fundamentals in register manipulation, deterministic logic loops, and structured hardware-software codesign
-
