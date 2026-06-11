@@ -19,7 +19,7 @@
 #include "admin.h"
 
 #define _DEBUG
-#define SW 0
+#define SW 24
 
 /*
  * RTC variables
@@ -65,7 +65,7 @@ int main()
     Init_ADC();
 
     /* Configure switch as input */
-    IODIR0 &= ~(1<<SW);
+    IODIR1 &= ~(1<<SW);
 
 #ifndef _DEBUG
     /* Default RTC values for testing */
@@ -84,11 +84,11 @@ int main()
         GetRTCDay(&day);
 
         /* Check admin switch */
-        if(((IOPIN0>>SW)&1)==0)
+        if(((IOPIN1>>SW)&1)==0)
         {
             delay_ms(50);
 
-            while(((IOPIN0>>SW)&1)==0);
+            while(((IOPIN1>>SW)&1)==0);
 
             CmdLCD(CLEAR_LCD);
             StrLCD("ADMIN MODE");
