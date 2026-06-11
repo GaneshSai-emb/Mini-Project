@@ -85,7 +85,7 @@ void rtc_edit()  // this function will make the rtc edit
             }
         }
     }
-/*
+
 void event_edit()
 {
 	u8 key,event_no;
@@ -131,7 +131,7 @@ void event_edit()
             return;
         }
     }
-} */
+} 
 void adminmode()
 {
     u8 key;
@@ -141,9 +141,9 @@ void adminmode()
  
         CmdLCD(CLEAR_LCD);
         CmdLCD(GOTO_LINE1_POS0);
-        StrLCD("1.RTC 2.EXIT");
-       // CmdLCD(GOTO_LINE2_POS0);
-        //StrLCD("3.EXIT");
+        StrLCD("1.RTC 2.EVENT");
+        CmdLCD(GOTO_LINE2_POS0);
+        StrLCD("3.EXIT");
 
         delay_ms(100);  
 
@@ -158,14 +158,14 @@ void adminmode()
                     delay_ms(200);
                     rtc_edit();
                     break;
-                /*case 2:
+                case 2:
                     CmdLCD(CLEAR_LCD);
                     StrLCD("EVENT EDIT");
                     delay_ms(200);
                     event_edit();
                     break;
-		  */
-                case 2:
+		  
+                case 3:
                     CmdLCD(CLEAR_LCD);
                     delay_ms(200);
                     return;
