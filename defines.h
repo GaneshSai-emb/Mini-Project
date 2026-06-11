@@ -1,0 +1,16 @@
+#ifndef DEFINES_H
+#define DEFINES_H
+#define SETBIT(WORD,BP) (WORD|=(1<<BP))
+#define CLRBIT(WORD,BP) (WORD&=~(1<<BP))
+#define STATUSBIT(WORD,BP) ((WORD>>BP)&1)
+#define WRITEBIT(WORD,BP,BIT) (WORD=((WORD&~(1<<BP))|(BIT<<BP)))
+#define WRITENIBBLE(WORD,SBP,NIBBLE) (WORD=((WORD&~(0xf<<SBP))|(NIBBLE<<SBP)))
+#define WRITEBYTE(WORD,SBP,BYTE) (WORD=((WORD&~(0xff<<SBP))|(BYTE<<SBP)))
+#define WRITEHWORD(WORD,SBP,HWORD) (WORD=((WORD&~(0xffff<<SBP))|(HWORD<<SBP)))
+#define READNIBBLE(WORD,SBP) ((WORD>>SBP)&15)
+#define SSETBIT(WORD,BP) (WORD = (1<<BP))	//used for IOSET register
+#define SCLRBIT SSETBIT	//used for IOCLR register
+#endif
+
+
+
